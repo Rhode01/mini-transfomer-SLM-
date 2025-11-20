@@ -11,3 +11,16 @@ class SelfAttention(nn.Module):
         self.W_q = nn.Linear(d_model, d_model)
         self.W_k = nn.Linear(d_model, d_model)
         self.W_v = nn.Linear(d_model, d_model)
+    def forward(self, x):
+        
+
+        Q = self.W_q(x) 
+        K = self.W_k(x)  
+        V = self.W_v(x) 
+        scores = torch.matmul(Q, K.transpose(-2, -1)) / math.sqrt(self.d_k)
+
+        weights = torch.softmax(scores, dim=-1)
+
+        output = torch.matmul(weights, V) 
+
+        return output, weights
